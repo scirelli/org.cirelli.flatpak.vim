@@ -1,0 +1,33 @@
+---
+# org.cirelli.flatpak.vim.yml
+app-id: org.cirelli.flatpak.vim
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-version: '23.08'
+command: vim
+
+finish-args:
+  # Grant permissions to access files outside the sandbox
+  - --filesystem=host
+  # Permissions for GUI display
+  - --socket=x11
+  - --socket=wayland
+  # Allows inter-process communication
+  - --share=ipc
+
+modules:
+  - name: vim
+    buildsystem: autotools
+    config-opts:
+      - --with-features=huge
+      - --enable-gui=gtk3
+      - --enable-python3interp=yes
+      - --enable-rubyinterp=yes
+      - --enable-luainterp=yes
+      - --enable-perlinterp=yes
+      - --enable-tclinterp
+    sources:
+      - type: git
+        url: https://github.com/vim/vim.git
+        tag: v9.1.1585
